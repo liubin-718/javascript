@@ -34,7 +34,7 @@ export default function () { ... };
 //------ main1.js ------
 import myFunc from 'myFunc';//import命令后面，不使用大括号。
 myFunc();
-//export default输出多个方法
+//export default输出多个方法   a.js
 export default {
   a() {
     return 'a'
@@ -46,3 +46,5 @@ export default {
     return 'c'
   }
 }
+import myFun from './a.js'
+myFun.a()
