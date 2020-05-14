@@ -1,7 +1,16 @@
 
 1.CommonJS的模块只有一个唯一的出口, 那就是module.exports对象
+CommonJS的三大特点(定义, 引入, 标识),
 # 必须要知道的CommonJS和ES6 Modules规范
 # https://zhuanlan.zhihu.com/p/27644026
+
+对比：
+a、CommonJS是在运行时才确定引入, 然后执行这个模块, 相当于是调用一个函数, 返回一个对象
+b、而ES6 Module是语言层面的, 导入导出是声明式的代码集合. 声明式的意思就是说, 直接利用关键字声明说我要导入/导出一个模块啦, 而不是粗鄙(节目效果)地将一个对象赋值给一个变量, 例如
+import {a, b} from './moduleName'
+再看看不是声明式的例子
+let a = require('moduleName')
+
 1.3 模块的标识
 
 模块的标识, 指在require('moduleName')一个模块, 如何根据传入的参数找到这个模块. 这个模块标识主要有以下几种类型:

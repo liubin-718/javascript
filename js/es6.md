@@ -48,3 +48,17 @@ export default {
 }
 import myFun from './a.js'
 myFun.a()
+
+import语句会执行所加载的模块，因此可以有下面的写法。
+import 'lodash';
+上面代码仅仅执行lodash模块，但是不输入任何值。
+如果多次重复执行同一句import语句，那么只会执行一次，而不会执行多次。
+
+export default命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，因此export default命令只能使用一次。
+export default a的含义是将变量a的值赋给变量default。所以，最后一种写法会报错。
+
+export var a = 1;// 正确
+// 正确
+var a = 1;
+export default a;
+export default var a = 1;// 错误
