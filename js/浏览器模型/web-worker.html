@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web worker</title>
+</head>
+
+<body>
+    <div id="worker">
+        objectURL = URL.createObjectURL(object); <br>
+        参数 object <br>
+        用于创建 URL 的 File 对象、Blob 对象或者 MediaSource 对象。​ <br>
+        返回值 <br>
+        一个DOMString包含了一个对象URL，该URL可用于指定源 object的内容。
+        <hr>
+        var blob = new Blob([document.querySelector('#worker').textContent]);
+        var url = window.URL.createObjectURL(blob);
+    </div>
+    <pre>
+    <h3>Web Worker 的作用，就是为 JavaScript 创造多线程环境</h3>
+    Worker 线程一旦新建成功，就会始终运行，不会被主线程上的活动（比如用户点击按钮、提交表单）打断。这样有利于随时响应主线程的通信。
+    但是，这也造成了 Worker 比较耗费资源，不应该过度使用，而且一旦使用完毕，就应该关闭。
+
+    Web Worker 有以下几个使用注意点。
+    1）同源限制
+        分配给 Worker 线程运行的脚本文件，必须与主线程的脚本文件同源。
+    2）DOM 限制
+        Worker 线程所在的全局对象，与主线程不一样，无法读取主线程所在网页的 DOM 对象，也无法使用document、window、parent这些对象。
+        但是，Worker 线程可以使用navigator对象和location对象。
+    3）全局对象限制
+        Worker 的全局对象WorkerGlobalScope，不同于网页的全局对象Window，很多接口拿不到
+    4）通信联系
+        Worker 线程和主线程不在同一个上下文环境，它们不能直接通信，必须通过消息完成。
+    5）脚本限制
+        Worker 线程不能执行alert()方法和confirm()方法，但可以使用 XMLHttpRequest 对象发出 AJAX 请求。
+    6）文件限制
+        Worker 线程无法读取本地文件，即不能打开本机的文件系统（file://），它所加载的脚本，必须来自网络。
+
+    </pre>
+    <pre>
+        新建一个 Worker 线程。  
+        var worker = new Worker('work.js');
+        Worker()构造函数的参数是一个脚本文件，该文件就是 Worker 线程所要执行的任务。由于 Worker 不能读取本地文件，所以这个脚本必须来自网络。如果下载没有成功（比如404错误），Worker 就会默默地失败。
+
+        然后，主线程调用worker.postMessage()方法，向 Worker 发消息。
+        worker.postMessage('Hello World');
+        worker.postMessage({method: 'echo', args: ['Work']});
+        worker.postMessage()方法的参数，就是主线程传给 Worker 的数据。它可以是各种数据类型，包括二进制数据。
+
+        接着，主线程通过worker.onmessage指定监听函数，接收子线程发回来的消息。
+
+        worker.onmessage = function (event) {
+            doSomething(event.data);
+        }
+
+        function doSomething() {
+            // 执行任务
+            worker.postMessage('Work done!');
+        }
+        上面代码中，事件对象的data属性可以获取 Worker 发来的数据。
+
+        Worker 完成任务以后，主线程就可以把它关掉。
+        worker.terminate();
+
+        <h3>Worker 加载脚本</h3>
+        Worker 内部如果要加载其他脚本，有一个专门的方法importScripts()。
+
+        importScripts('script1.js');
+        该方法可以同时加载多个脚本。
+
+        importScripts('script1.js', 'script2.js');
+    </pre>
+
+</body>
+
+</html>

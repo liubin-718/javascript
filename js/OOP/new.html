@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>new</title>
+</head>
+
+<body>
+    <pre>
+    典型的面向对象编程语言（比如 C++ 和 Java），都有“类”（class）这个概念。所谓“类”就是对象的模板，对象就是“类”的实例。
+    但是，JavaScript 语言的对象体系，不是基于“类”的，而是基于构造函数（constructor）和原型链（prototype）。
+    基本用法
+    new命令的作用，就是执行构造函数，返回一个实例对象。
+    
+    var Vehicle = function () {
+      this.price = 1000;
+    };
+    
+    var v = new Vehicle();
+    v.price // 1000
+    v.constructor===Vehicle // true
+ </pre>
+    <pre>
+     <h3>new操作符几个作用</h3>
+     * new 操作符会返回一个对象，所以我们需要在内部创建一个对象
+     * 这个对象，也就是构造函数中的 this，可以访问到挂载在 this上的任意属性
+     * 这个对象可以访问到构造函数原型上的属性，所以需要将对象与构造函数链接起来
+     * 返回原始值需要忽略，返回对象需要正常处理
+ </pre>
+    <script>
+        /* 自己实现一个new */
+
+        // instanceof 运算符用于检测构造函数的 prototype 属性是否出现在某个实例对象的原型链
+        // instanceof 运算符用来检测 constructor.prototype 是否存在于参数 object 的原型链上。
+        // object instanceof constructor(object某个实例对象   constructor某个构造函数)
+        function create(Con, ...args) {
+            let obj = {}
+            // obj.__pro__ = Con.prototype 等同于
+            Object.setPrototypeOf(obj, Con.prototype)
+            let result = Con.apply(obj, args)
+            return result instanceof Object ? result : obj
+        }
+        // 使用该函数，看看行为是否和new一致
+        function Test(name, age) {
+            this.name = name
+            this.age = age
+        }
+        Test.prototype.sayName = function () {
+            console.log(this.name);
+        }
+        const a = create(Test, 'jock', 20)
+        console.log(a.name, a.age);
+        a.sayName()
+
+        // Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__。 
+        // eg:  me 是person.prototype
+        const me = Object.create(person);
+        me.__proto__ === person // true
+
+        function _new(/* 构造函数 */ constructor, /* 构造函数参数 */ params) {
+            // 将 arguments 对象转为数组
+            var args = [].slice.call(arguments);
+            // 取出构造函数
+            var constructor = args.shift();
+            // 创建一个空对象，继承构造函数的 prototype 属性
+            var context = Object.create(constructor.prototype);
+            // 执行构造函数
+            var result = constructor.apply(context, args);
+            // 如果返回结果是对象，就直接返回，否则返回 context 对象
+            return (typeof result === 'object' && result != null) ? result : context;
+        }
+
+        // 实例
+        var actor = _new(Test, '张三', 28);
+        console.log(actor.name, actor.age);
+        actor.sayName()
+
+
+    </script>
+</body>
+
+</html>
