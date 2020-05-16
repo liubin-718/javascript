@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="d1">hello world</div>
+    <ul>
+        <li title="">li one</li>
+        <li>li two</li>
+    </ul>
+    <script>
+        // 1、属性  https://wangdoc.com/javascript/dom/node.html
+        // 1.1 Node.prototype.nodeType
+        // 文档节点（document）：9，对应常量Node.DOCUMENT_NODE
+        // 元素节点（element）：1，对应常量Node.ELEMENT_NODE
+        // 属性节点（attr）：2，对应常量Node.ATTRIBUTE_NODE
+        // 文本节点（text）：3，对应常量Node.TEXT_NODE
+        // 注释节点（Comment）：8，对应常量
+        console.log(document.nodeType)  //9
+
+        // 1.2 Node.prototype.nodeName  返回节点的名称  DIV
+        // 文档节点（document）：#document
+        // 元素节点（element）：大写的标签名
+        // 属性节点（attr）：属性的名称
+        // 文本节点（text）：#text
+        // 文档片断节点（DocumentFragment）：#document - fragment
+        // 文档类型节点（DocumentType）：文档的类型
+        // 注释节点（Comment）：#comment
+        var div = document.getElementById('d1').nodeName;
+        console.log(div);
+        // 1.3 Node.prototype.nodeValue
+        // 只有文本节点（text）、注释节点（comment）和属性节点（attr）有文本值，
+        // 因此这三类节点的nodeValue可以返回结果，其他类型的节点一律返回null。同样的，也只有这三类节点可以设置nodeValue属性的值，其他类型的节点设置无效。
+        var div = document.getElementById('d1');
+        div.nodeValue // null
+        div.firstChild.nodeValue // "hello world"
+        // 1.4 Node.prototype.textContent
+        // 返回当前节点和它的所有后代节点的文本内容。
+        // 1.7 Node.prototype.nextSibling
+        // 1.8 Node.prototype.previousSibling  返回当前节点前面的、距离最近的一个同级节点
+        // 1.9 Node.prototype.parentNode 返回当前节点的父节点（它的父节点只可能是三种类型：元素节点（element）、文档节点（document）和文档片段节点（documentfragment））
+        // 1.10 Node.prototype.parentElement 返回当前节点的父元素节点（元素节点、文档节点（document）和文档片段节点（documentfragment））
+        // 1.11 Node.prototype.firstChild，Node.prototype.lastChild
+        // 1.12 Node.prototype.childNodes 返回一个类似数组的对象（NodeList集合），成员包括当前节点的所有子节点。
+        var children = document.querySelector('ul').childNodes
+        console.log(children);  // [text, li, text, li, text]
+        // 2、方法
+        // 2.1 Node.prototype.appendChild() 将其作为最后一个子节点，插入当前节点
+        // 2.2 Node.prototype.hasChildNodes() 返回一个布尔值，表示当前节点是否有子节点。
+        // 2.4 Node.prototype.insertBefore(newNode, referenceNode)
+        // 2.5 Node.prototype.removeChild() 返回值是移除的子节点
+        var ul = document.querySelector('ul')
+        // while (ul.firstChild) { //  移除当前节点的所有子节点
+        // ul.removeChild(ul.firstChild)
+        // }
+        // 2.6 Node.prototype.replaceChild(newChild, oldChild) 返回值是替换走的那个节点oldChild
+        // 2.9 Node.prototype.isEqualNode()，Node.prototype.isSameNode()
+        // isEqualNode方法返回一个布尔值，用于检查两个节点是否相等。所谓相等的节点，指的是两个节点的类型相同、属性相同、子节点相同。
+
+        var p1 = document.createElement('p');
+        var p2 = document.createElement('p');
+
+        p1.isEqualNode(p2) // true
+        // isSameNode方法返回一个布尔值，表示两个节点是否为同一个节点。
+        var p1 = document.createElement('p');
+        var p2 = document.createElement('p');
+
+        p1.isSameNode(p2) // false
+        p1.isSameNode(p1) // true
+        // 2.10 Node.prototype.normalize() 清理当前节点内部的所有文本节点（text）
+    </script>
+</body>
+
+</html>
