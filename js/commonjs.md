@@ -3,6 +3,8 @@
 CommonJS的三大特点(定义, 引入, 标识),
 # 必须要知道的CommonJS和ES6 Modules规范
 # https://zhuanlan.zhihu.com/p/27644026
+# commonJS规范
+# https://javascript.ruanyifeng.com/nodejs/module.html
 
 对比：
 a、CommonJS是在运行时才确定引入, 然后执行这个模块, 相当于是调用一个函数, 返回一个对象
