@@ -89,3 +89,132 @@ function reduce(arr, reduceCb, initialValue) {
     }
 }
 
+// call函数的实现
+Function.prototype.mycall = function (context) {
+    // 判断调用函数
+    if (typeof this !== "function") {
+        console.error('type error')
+    }
+    // 获取参数
+    let args = [...arguments].slice(1)
+    result = null
+    // 判断context是否传入，如果未传入则设置为window
+    context = context || window
+    // 将调用函数设为对象的方法
+    context.fn = this
+    // 调用函数
+    result = context.fn(...args)
+    // 删除属性
+    delete context.fn
+    return result
+}
+
+// apply函数实现
+Function.prototype.myapply = function (context) {
+    if (typeof this !== "function") {
+        throw new TypeError('Error')
+    }
+    let result = null
+    context = context || window
+    context.fn = this
+    // 调用方法
+    if (arguments[1]) {
+        result = context.fn(...arguments[1])
+    } else {
+        result = context.fn()
+    }
+    delete context.fn
+    return result
+}
+
+// bind函数实现
+/* 
+1.判断调用对象是否为函数，即使我们定义在函数原型上的，但有可能出现使用call等方式调用情况
+2.保存当前函数的引用，获取其余传入参数值
+3.创建建一个函数返回
+4.函数内部使用apply来绑定函数调用，需要判断函数作为构造函数的情况，这时需要传入当前函数的this
+  给apply调用，其余情况都传入指定的上下文情况
+*/
+Function.prototype.mybind = function (context) {
+    if (typeof this !== 'function') {
+        throw new TypeError('Error')
+    }
+    var args = [...arguments].slice(1)
+    fn = this
+    return function Fn() {
+        // 根据调用方式，传入不同绑定值
+        return fn.apply(
+            this instanceof Fn ? this : context,
+            args.concat(...arguments)
+        )
+    }
+}
+
+// 模拟new
+function objectFactory() {
+    var obj = {}
+    // 取的该方法的第一个参数（并删除第一个参数），该参数是构造函数
+    var Constructor = [].shift.apply(arguments)
+    // 将新对象的内部属性__proto__指向构造函数的原型，这样新对象就可以访问原型中的属性和方法
+    obj.__proto__ = Constructor.prototype
+    // 取得构造函数的返回值
+    var ret = Constructor.apply(obj, arguments)
+    // 如果返回值是一个对象就返回该对象，否则返回构造函数的一个实例对象
+    return typeof ret === 'object' ? ret : obj
+}
+
+// instanceof 原理，如何实现
+// instanceof可以正确判断对象类型，因为内部机制是通过判断对象的原型链中是不是能找到类型的prototype
+/* 
+  1.首先获取类型的原型
+  2.再获取对象的原型
+  3.循环判断对象的原型是否等于类型的原型，直到对象原型为null（原型链最终为null）
+*/
+function myInstanceOf(left, right) {
+    let prototype = right.prototype
+    left = left.__proto__
+    while (true) {
+        if (left === null || left === undefined)
+            return false
+        if (prototype === left)
+            return true
+        left = left.__proto__
+    }
+}
+
+// js的节流和防抖
+/*
+  函数防抖 是指在事件被触发 n 秒后再执行回调，如果在这 n 秒内事件又被触发，则重新计时。这可以使用在一些点击请求的事件上，避免因为用户的多次点击向后端发送多次请求。
+  函数节流 是指规定一个单位时间，在这个单位时间内，只能有一次触发事件的回调函数执行，如果在同一个单位时间内某事件被触发多次，只有一次能生效。节流可以使用在 scroll 函数的事件监听上，通过事件节流来降低事件调用的频率。
+*/
+function debounce(fn, wait) {
+    // 函数防抖
+    var timer = null
+    return function () {
+        var context = this
+        var args = arguments
+        if (timer) {
+            clearTimeout(timer)
+            timer = null
+        }
+        // 设置定时器，使事件间隔指定时间执行
+        timer = setTimeout(() => {
+            fn.apply(context, args)
+        }, wait)
+    }
+}
+
+function throttle(fn, delay) {
+    // 函数节流
+    var preTime = Date.now()
+    return function () {
+        var context = this,
+            args = arguments,
+            nowTime = Date.now();
+        // 如果两次时间间隔超过了指定时间，则执行函数
+        if (nowTime - preTime >= delay) {
+            preTime = Date.now()
+            return fn.apply(context, args)
+        }
+    }
+}
