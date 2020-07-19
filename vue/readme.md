@@ -55,7 +55,7 @@ h、变量本地化
    1).vue用异步队列的方式来控制DOM更新和nextTick回调先后执行
    2).microtask因为其高优先级特性，能保证队列中的微任务在一次事件循环前被执行完毕
    3).因为兼容性问题，vue不得不做了microtask向macrotask的降级方案
-6、计算属性和watch的区别
+6、计算属性computed和watch的区别
   vue中watch的高级用法：  https://juejin.im/post/5ae91fa76fb9a07aa7677543
   1.computed是计算属性，类似于过滤器,对绑定到视图的数据进行处理,并监听变化进而执行对应的方法，官网的例子：
 <div id="example">
@@ -78,7 +78,7 @@ var vm = new Vue({
 结果：
 Original message: "Hello"
 Computed reversed message: "olleH"
-复制代码计算属性是基于它们的依赖进行缓存的。只在相关依赖发生改变时它们才会重新求值。值得注意的是“reversedMessage”不能在组件的props和data中定义，否则会报错。
+计算属性是基于它们的依赖进行缓存的。只在相关依赖发生改变时它们才会重新求值。值得注意的是“reversedMessage”不能在组件的props和data中定义，否则会报错。
 
 假设有如下代码：
 <div>
@@ -125,6 +125,94 @@ hash模式：在浏览器中符号“#”，#以及#后面的字符称之为hash
 hash 模式下:仅 hash 符号之前的内容会被包含在请求中，如 http://www.xxx.com，因此对于后端来说，即使没有做到对路由的全覆盖，也不会返回 404 错误。
 history模式：history采用HTML5的新特性；且提供了两个新方法：pushState（），replaceState（）可以对浏览器历史记录栈进行修改，以及popState事件的监听到状态变更。
 history 模式:前端的 URL 必须和实际向后端发起请求的 URL 一致，如 http://www.xxx.com/items/id。后端如果缺少对 /items/id 的路由处理，将返回 404 错误。Vue-Router 官网里如此描述：“不过这种模式要玩好，还需要后台配置支持……所以呢，你要在服务端增加一个覆盖所有情况的候选资源：如果 URL 匹配不到任何静态资源，则应该返回同一个 index.html 页面，这个页面就是你 app 依赖的页面。”
+10、assets和static的区别
+答：相同点：assets和static两个都是存放静态资源文件。项目中所需要的资源文件图片，字体图标，样式文件等都可以放在这两个文件下，这是相同点 
+不相同点：assets中存放的静态资源文件在项目打包时，也就是运行npm run build时会将assets中放置的静态资源文件进行打包上传，所谓打包简单点可以理解为压缩体积，代码格式化。而压缩后的静态资源文件最终也都会放置在static文件中跟着index.html一同上传至服务器。static中放置的静态资源文件就不会要走打包压缩格式化等流程，而是直接进入打包好的目录，直接上传至服务器。因为避免了压缩直接进行上传，在打包时会提高一定的效率，但是static中的资源文件由于没有进行压缩等操作，所以文件的体积也就相对于assets中打包后的文件提交较大点。在服务器中就会占据更大的空间。
+建议：将项目中template需要的样式文件js文件等都可以放置在assets中，走打包这一流程。减少体积。而项目中引入的第三方的资源文件如iconfoont.css等文件可以放置在static中，因为这些引入的第三方文件已经经过处理，我们不再需要处理，直接上传。
+11、vue-router导航钩子：
+  a、全局导航钩子：beforeEach(to, from, next) 
+                  beforeResolve(to, from, next) -全局解析守卫，根beforeEach类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫被调用 （2.5新增）
+                  afterEach(to, from)
+  b、路由组件上的导航钩子：beforeRouteEnter(to,from,next) -不能获取组件实例this
+                         beforeRouteUpdate  beforeRouteLeave
+  c、某个路由独享的导航钩子： beforeEnter(to, from, next)
+12、单例模式：指在内存中只会创建且创建一次对象的设计模式。
+  eg：Vuex和Redux中的Store
+  在程序中多次使用同一个对象且作用相同时，为防止频繁地创建对象使得内存飙升，单例模式可以让程序仅在内存中创建一个对象，让所有需要调用的地方都共享这一单例对象。
+  两种类型： 
+    1）懒汉式：在真正需要使用对象时才去创建该单例类对象
+    2）饿汉式：在类加载时已经创建好该单例对象，等待被程序使用
+13、watch和created哪个先执行
+ 如果watch加了 immediate：true，就是watch先执行，否则就是created先执行
+14、父子组件生命周期执行顺序：
+<template>
+  <div id="parent">
+    <child></child>
+  </div>
+</template>
+父组件beforeCreated
+父组件created
+父组件beforeMounted
+子组件beforeCreated
+子组件created
+子组件beforeMounted
+子组件mounted
+父组件mounted
+
+注意：
+
+父组件的mounted是在最后执行的。
+因此在子组件的mounted中渲染父组件在mounted阶段请求的数据，是会无反应的。因为子组件mounted渲染数据会发生在父组件mounted请求数据之前。
+
+ /* 1、 深克隆与浅克隆
+        浅克隆就是复制一份引用， 所有引用指向同一份数据。
+        深克隆就是创造一个完全一样的对象， 将原对象的的所有元素拷贝过来即可。
+    */
+        function extendClone(oldoObj){
+            var newObj = {};
+            for (var i in oldObj) {
+                newObj[i] = oldObj;
+            }
+            return newObj;
+        }
+
+        function deepClone(org, trg){
+            var trg = trg||{};
+            for(var prop in org){
+                if(org.hasOwnProperty(prop)){
+                    if(org[prop]!=="null" && typeof org[prop]==="object"){
+                        if(Object.prototype.toString.call(org[prop])=="[object Array]"){
+                            trg[prop] = [];
+                        }else{
+                            trg[prop] = {};
+                        }
+                        deepClone(org[prop], trg[prop]);
+                    }else{
+                        trg[prop] = org[prop]
+                    }
+                }
+            }
+        };
+        var obj = {
+            name : 'syy',
+            age : 12,
+            tabs : [1,2,3,4,5],
+            hobbies : {
+                a : 'a',
+                b : [4,5,6,7],
+                c : {
+                    d : 'd',
+                    e : 'e'
+                }
+            }
+        }
+        var obj1 = {};
+        deepClone(obj,obj1)
+        obj.tabs[0]=100;
+        obj.hobbies.c.d="wxy";
+        console.log(obj1);
+
+
 
 
 
