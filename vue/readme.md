@@ -164,6 +164,35 @@ history 模式:前端的 URL 必须和实际向后端发起请求的 URL 一致�
 父组件的mounted是在最后执行的。
 因此在子组件的mounted中渲染父组件在mounted阶段请求的数据，是会无反应的。因为子组件mounted渲染数据会发生在父组件mounted请求数据之前。
 
+扩展：[父组件的created和子组件的mounted的执行先后？
+执行顺序如下：
+
+父组件 created
+子组件 created
+子组件 mounted
+父组件 mounted
+如果有多个子组件：
+
+父组件created钩子结束后，依次执行子组件的created钩子
+多个子组件的created执行顺序为父组件内子组件DOM顺序
+多个子组件的mounted顺序无法保证，跟子组件本身复杂程度有关
+父组件一定在所有子组件结束mounted钩子之后，才会进入mounted钩子
+
+beforeUpdate 父级 数据更新前
+updated 父级 组件DOM更新
+beforeDestroy 父级 实例销毁前
+beforeDestroy 子级
+destroyed子级
+destroy父级 实例销毁完成
+
+子级数据更新：https://www.cnblogs.com/gqx-html/p/10857119.html
+当对子级进行事件处理时，会先触发父级beforeUpdate钩子，再去触发子级beforeUpdate钩子，
+下面又是先执行子级updated钩子，后执行父级updated钩子
+beforeUpdate 父级
+beforeUpdate 子级
+updated 子级
+updated 父级 组件DOM更新
+
  /* 1、 深克隆与浅克隆
         浅克隆就是复制一份引用， 所有引用指向同一份数据。
         深克隆就是创造一个完全一样的对象， 将原对象的的所有元素拷贝过来即可。
@@ -212,7 +241,32 @@ history 模式:前端的 URL 必须和实际向后端发起请求的 URL 一致�
         obj.hobbies.c.d="wxy";
         console.log(obj1);
 
+15、Vue的编译过程就是将template转化为render函数的过程
 
+16、MVC、MVP、MVVM
+这三者都是框架模式，它们设计的目标都是为了解决Model和View的耦合问题。
+
+ViewModel通过实现一套数据响应式机制自动响应Model中数据变化；
+同时ViewModel会实现一套更新策略自动将数据变化转换为视图更新；
+通过事件监听响应View中用户交互修改Model中数据。
+这样在ViewModel中就减少了大量DOM操作代码。
+MVVM在保持View和Model层耦合的同时，还减少了维护他们关系的代码，使用户专注于业务逻辑，兼顾开发效率和可维护性。
+
+17、当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级
+18、组件外层template设置v-if v-show v-for起作用吗？
+后来看了一下vue-loader的文档，发现了这么一段：
+
+模板
+每个 .vue 文件最多包含一个 <template>块。
+内容将被提取并传递给 vue-template-compiler 为字符串，预处理为 JavaScript 渲染函数，并最终注入到从 <script> 导出的组件中。
+意思是，单文件组件的template相当于是一个标明需要交给Vue的渲染函数进行处理的内容范围的占位符，webpack处理的时候会直接提取出最外层template内的内容，忽略掉template这个标签本身，所以写在template上的属性和指令都是没有用的。
+
+那为什么写在里面的template就能用呢？因为这两个根本不是一个东西，只是正好同名了而已。最外面的那个只是一个占位符，里面的则有实际的用途。
+
+总结：组件最外层的template上面的属性和指令不起作用，内层的template上设key报错：<template> cannot be keyed. Place the key on real elements instead. 应该将key设置到template内实际元素上
+19、data为什么是一个函数而不是一个对象？
+抽离出的组件有复用性，如果data是一个对象，那么它所有的实例都会共享这些数据。
+在js中函数具有独立作用域，外部无法访问其内部变量。
 
 
 

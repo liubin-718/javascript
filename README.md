@@ -30,3 +30,13 @@ https://www.cnblogs.com/dennisj/p/12550996.html
 主线程手上的同步任务干完后就来事件队列看看有没有任务
 主线程发现事件队列有任务，就取出里面的任务执行
 主线程不断循环上述流程
+
+configureWebpack
+Type: Object | Function
+
+如果这个值是一个对象，则会通过 webpack-merge 合并到最终的配置中。
+
+如果这个值是一个函数，则会接收被解析的配置作为参数。该函数及可以修改配置并不返回任何东西，也可以返回一个被克隆或合并过的配置版本。
+————————————————
+原文链接：https://blog.csdn.net/playboyanta123/article/details/103528594
+
