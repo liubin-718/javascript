@@ -68,8 +68,21 @@ function flatten(arr){
 
 4、第10篇: 能不能实现事件的防抖和节流？
 节流   对 scroll 事件做节流处理
-节流的核心思想: 如果在定时器的时间范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器任务。这就好比公交车，10 分钟一趟，10 分钟内有多少人在公交站等我不管，10 分钟一到我就要发车走人！
+节流的核心思想: 如果在定时器的时间范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器任务。
+这就好比公交车，10 分钟一趟，10 分钟内有多少人在公交站等我不管，10 分钟一到我就要发车走人！
 代码如下:
+const throttle = (fn, wait = 1000) => {
+  let lastTime = 0
+  return (...args) => {
+    let now = + new Date()
+    if (now - lastTime > wait) {
+      lastTime = now
+      fn.apply(this, args)
+    }
+  }
+}
+
+
 function throttle(fn, interval) {
   let flag = true;
   return function(...args) {
@@ -106,6 +119,17 @@ function debounce(fn, delay) {
     timer = setTimeout(function() {
       fn.apply(context, args);
     }, delay);
+  }
+}
+const debounce = (fn, wait=1000)=>{
+  let timer = 0
+  return (...args)=>{
+    if(timer){
+      clearTimeout(timer)
+    }
+    timer = setTimeout(()=>{
+      fn.apply(this, args)
+    }, wait)
   }
 }
 双剑合璧——加强版节流
