@@ -40,7 +40,3 @@ Type: Object | Function
 ————————————————
 原文链接：https://blog.csdn.net/playboyanta123/article/details/103528594
 
-
-npm link 专门用于开发和调试本地Npm模块
-https://www.jianshu.com/p/c021b78c9ef2
-
