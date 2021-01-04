@@ -42,20 +42,64 @@ function singleLineDistinct(str){
     ), '')
     return str
 }
-// 利用Set数据结构特性
+/* 
+    数组去重
+*/
+// 利用Set数据结构特性 
 function distinct(arr){
     return Array.from(new Set(arr))
 }
-4、
-// 方法一
+// 利用对象的属性key唯一的特性去重
+function distinch(arr){
+    let obj={}
+    let newArr=[]
+    for (let i = 0; i < arr.length; i++) {
+        if(!obj[arr[i]]){
+            obj[arr[i]]=1
+            newArr.push(arr[i])
+        }  
+    }
+    return newArr
+}
+// 统计出现次数
+function distinchN(arr){
+    let obj={}
+    for (let i = 0; i < arr.length; i++) {
+        if(!obj[arr[i]]){
+            obj[arr[i]]=1
+        }else{
+            obj[arr[i]]++
+        }
+    }
+    return obj
+}
+// distinchN(['1','a','a',2,3,3,3,4])   
+//{1: 1, 2: 1, 3: 3, 4: 1, a: 2}
+// includes或indexOf去重
+function(arr){
+    let newArr=[]
+    for (let i = 0; i < arr.length; i++) {
+        if(!newArr.includes(arr[i])){ 
+        // if(newarr.indexOf(arr[i])<0){
+            newArr.push(arr[i])
+        }        
+    }
+    return newArr
+}
+4、https://www.cnblogs.com/qing-5/p/11365614.html
+// 方法一 原型链实现继承
 function B(){}
 function A(){}
 B.prototype = new A()
-// 方法二：
+// 方法二： 借用构造函数实现继承
 function A(){}
 function B(){
+    // A.call(this);“借调”了超类型的构造函数。通过使用call()方法（或者apply()方法），在新创建的 B 实例的环境下调用了A构造函数。
+    // 这样一来就会在新的B对象上执行A()函数中定义的所有对象初始化代码。结果，B的每个实例都会有自己的colors属性副本
     A.call(this)
 }
+// 三、组合继承
+// 四、原型式继承
 
 5、
 function deepClone(obj) {
@@ -148,6 +192,24 @@ function currying(fn, ...args){
         return currying(fn, ...args, ...newArgs)
     }
 }
+
+// https://juejin.cn/post/6911565511226556430
+var a=?
+if(a==1&&a==2&&a==3){
+    console.log('hello')
+}
+// 方法一： 利用对象的类型转换
+var a={
+    num:1,
+    toString:function (){
+        return a.num++
+    }
+}
+// 方法二：利用数组的取值和类型转换
+var a=[1,2,3,4]
+a.join=a.shift
+
+
 
 
 

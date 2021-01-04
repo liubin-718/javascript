@@ -78,7 +78,8 @@ var vm = new Vue({
 结果：
 Original message: "Hello"
 Computed reversed message: "olleH"
-计算属性是基于它们的依赖进行缓存的。只在相关依赖发生改变时它们才会重新求值。值得注意的是“reversedMessage”不能在组件的props和data中定义，否则会报错。
+计算属性是基于它们的依赖进行缓存的。只在相关依赖发生改变时它们才会重新求值。
+值得注意的是“reversedMessage”不能在组件的props和data中定义，否则会报错。
 
 假设有如下代码：
 <div>
@@ -136,6 +137,7 @@ history 模式:前端的 URL 必须和实际向后端发起请求的 URL 一致�
   b、路由组件上的导航钩子：beforeRouteEnter(to,from,next) -不能获取组件实例this
                          beforeRouteUpdate  beforeRouteLeave
   c、某个路由独享的导航钩子： beforeEnter(to, from, next)
+
 12、单例模式：指在内存中只会创建且创建一次对象的设计模式。
   eg：Vuex和Redux中的Store
   在程序中多次使用同一个对象且作用相同时，为防止频繁地创建对象使得内存飙升，单例模式可以让程序仅在内存中创建一个对象，让所有需要调用的地方都共享这一单例对象。
@@ -144,7 +146,9 @@ history 模式:前端的 URL 必须和实际向后端发起请求的 URL 一致�
     2）饿汉式：在类加载时已经创建好该单例对象，等待被程序使用
 13、watch和created哪个先执行
  如果watch加了 immediate：true，就是watch先执行，否则就是created先执行
+
 14、父子组件生命周期执行顺序：
+https://blog.csdn.net/qq3401247010/article/details/81585411
 <template>
   <div id="parent">
     <child></child>
@@ -267,6 +271,22 @@ MVVM在保持View和Model层耦合的同时，还减少了维护他们关系的�
 19、data为什么是一个函数而不是一个对象？
 抽离出的组件有复用性，如果data是一个对象，那么它所有的实例都会共享这些数据。
 在js中函数具有独立作用域，外部无法访问其内部变量。
+20、new 做了那些事？
+描述new一个对象的过程
+
+创建一个新对象
+this指向这个新对象
+执行代码 对this赋值
+返回this
+
+new操作符新建了一个空对象，这个对象原型指向构造函数的prototype，执行构造函数后返回这个对象
+
+1、创建一个空的对象
+2、链接到原型
+3、绑定this指向，执行构造函数
+4、确保返回的是对象 
+21、跨域
+https://www.imooc.com/article/291931
 
 
 
