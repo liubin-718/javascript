@@ -257,7 +257,7 @@ ViewModel通过实现一套数据响应式机制自动响应Model中数据变化
 MVVM在保持View和Model层耦合的同时，还减少了维护他们关系的代码，使用户专注于业务逻辑，兼顾开发效率和可维护性。
 
 17、当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级
-18、组件外层template设置v-if v-show v-for起作用吗？
+18、组件外层template设置v-if v-show v-for起作用吗？ 不
 后来看了一下vue-loader的文档，发现了这么一段：
 
 模板
@@ -267,7 +267,10 @@ MVVM在保持View和Model层耦合的同时，还减少了维护他们关系的�
 
 那为什么写在里面的template就能用呢？因为这两个根本不是一个东西，只是正好同名了而已。最外面的那个只是一个占位符，里面的则有实际的用途。
 
-总结：组件最外层的template上面的属性和指令不起作用，内层的template上设key报错：<template> cannot be keyed. Place the key on real elements instead. 应该将key设置到template内实际元素上
+总结：组件最外层的template上面的属性和指令不起作用
+     内层的template上设key报错：<template> cannot be keyed. Place the key on real elements instead. 应该将key设置到template内实际元素上
+     内层template标签不支持v-show 但支持v-if、v-for、v-else、v-else-if
+     
 19、data为什么是一个函数而不是一个对象？
 抽离出的组件有复用性，如果data是一个对象，那么它所有的实例都会共享这些数据。
 在js中函数具有独立作用域，外部无法访问其内部变量。
@@ -287,6 +290,10 @@ new操作符新建了一个空对象，这个对象原型指向构造函数的pr
 4、确保返回的是对象 
 21、跨域
 https://www.imooc.com/article/291931
+
+22、vue的依赖收集在哪个生命周期进行？
+23、vue动态路由
+24、vue的$set和劫持数组7个方法做了什么（原理）？
 
 
 
