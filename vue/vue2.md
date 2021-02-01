@@ -55,6 +55,13 @@ h、变量本地化
    1).vue用异步队列的方式来控制DOM更新和nextTick回调先后执行
    2).microtask因为其高优先级特性，能保证队列中的微任务在一次事件循环前被执行完毕
    3).因为兼容性问题，vue不得不做了microtask向macrotask的降级方案
+   
+    1、for循环更新count数值，dom会被更新100次吗？
+    不会，因为queueWatcher函数做了过滤，相同的watcher对象不会被重复添加。
+    2、nextTick是如何做到监听dom更新完毕的？
+    vue用异步队列的方式来控制DOM更新和nextTick回调先后执行，保证了能在dom更新后在执行回调。
+    链接：https://juejin.cn/post/6880710529355251726
+
 6、计算属性computed和watch的区别
   vue中watch的高级用法：  https://juejin.im/post/5ae91fa76fb9a07aa7677543
   1.computed是计算属性，类似于过滤器,对绑定到视图的数据进行处理,并监听变化进而执行对应的方法，官网的例子：
@@ -101,8 +108,8 @@ new Vue({
   } 
 })
 上面的代码的效果是，当我们输入firstName后，wacth监听每次修改变化的新值，然后计算输出fullName。
-而immediate:true代表如果在 wacth 里声明了 firstName 之后，就会立即先去执行里面的handler方法
-deep:true 的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器
+而【immediate:true】代表如果在 wacth 里声明了 firstName 之后，就会立即先去执行里面的handler方法
+【deep:true】 的意思就是深入观察，监听器会一层层的往下遍历，给对象的所有属性都加上这个监听器
 7、组件通信
  a、父传递子
 父：自定义属性名 + 数据（要传递）=> :value=“数据”

@@ -66,3 +66,87 @@ HTML可以将元素分类方式分为行内元素、块状元素和行内块状�
 
 7、BFC  https://juejin.cn/post/6844904117056323597
 8、postcss  https://juejin.cn/post/6844903504293658632
+9、实现一个左右布局，左边200px，右边自适应
+  vh: 视野高度百分比
+  vw: 视野宽度百分比
+  <div class="wrap">
+      <div class="itemL">左边</div>
+      <div class="itemR">右边</div>
+  </div>
+  方案一： flex方案
+  .wrap{
+      display: flex;
+      height: 20vh;  /*或者设置一个固定高度 eg：500px*/
+  }
+  .itemL{
+      width: 200px;
+      height: 100%;
+      background: skyblue;
+      /* flex: 0 0 auto; 或flex: none */
+  }
+  .itemR{
+      flex: 1;/* 或flex:1 1 auto; */
+      background-color: salmon;
+      height: 100%;
+  }
+  方案二：使用float+BFC
+  .wrap{
+      overflow: auto;
+      height: 300px;
+  }
+  .itemL{
+      width: 200px;
+      float: left;
+      height: 100%;
+      background: skyblue;
+  }
+  .itemR{
+      overflow: auto;
+      height: 100%;
+      background-color: salmon;
+  }
+  方案三： table
+  .wrap{
+      width: 100%;
+      display: table;
+      height: 50vh;
+  }
+  .itemL{
+      width: 200px;
+      background: skyblue;
+      display: table-cell;
+  }
+  .itemR{
+      display: table-cell;
+      background-color: salmon;
+  }
+  10、实现一个左右固定中间自适应布局
+  <style type="text/css">
+			#box{
+				width:100%;
+				height:100px;
+				display:flex;
+				margin:10px;
+			}
+			#left,#right{
+				width:200px;
+				height:100px;
+				margin:10px;
+				background-color:#999;
+			}
+			#center{
+				flex:1;
+				height:100px;
+				margin:10px;/*左右margin不会叠加*/
+				background-color:#f00;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="box">
+			<div id="left">left</div>
+			<div id="center">center</div>
+			<div id="right">right</div>
+		</div>
+	</body>
+

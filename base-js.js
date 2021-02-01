@@ -154,3 +154,17 @@ function throttle(fn, delay) {
   }
 }
 链接：https://juejin.im/post/5df5bcea6fb9a016091def69
+
+最新ECMAScript标准定义了8种数据类型：
+  7种原始类型：Boolean、Null、Undefined、Number、BigInt、String、Symbol
+  和 Object
+
+  （BigInt 是一种数字类型的数据，它可以表示任意精度格式的整数）
+  1.typeof 5n==='bigint'  // true
+  2.它在某些方面类似于 Number ，但是也有几个关键的不同点：不能用于 Math 对象中的方法；
+  不能和任何 Number 实例混合运算，两者必须转换成同一种类型。在两种类型来回转换时要小心，
+  因为 BigInt 变量在转换成 Number 变量时可能会丢失精度。
+  3.typeof Object(1n) === 'object'; // true
+    typeof BigInt('1') === 'bigint'; // true
+
+  https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt
