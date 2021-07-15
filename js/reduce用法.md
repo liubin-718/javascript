@@ -128,6 +128,8 @@ counts([0,2,3,3,4,2,2,4]) //{0: 1, 2: 3, 3: 2, 4: 2}
 function max(arr=[]){
   return arr.reduce((t,v) => t > v ? t: v)
 }
+Math.max(...arr)
+Math.min(...arr)
 function min(arr=[]){
   return arr.reduce((t,v) => t > v ? v: t)
 }
