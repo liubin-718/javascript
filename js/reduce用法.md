@@ -105,6 +105,9 @@ position([2,1,3,4,2,6,7,6,6], 2) //[0,4]
 function counts(arr=[]){
   return arr.reduce((t,v) => (t[v] = (t[v] || 0) + 1, t), {})
 }
+function counts(arr=[]){
+  return arr.reduce((t,v) => (t[v] ? t[v]++ : t[v]=1, t), {})
+}
 function counts1(arr=[]){
   return arr.reduce((pre,cur) => {
     if(cur in pre){
@@ -139,9 +142,15 @@ function Flat(arr=[]){
 const arr = [1,[2,3,[4,5,[6]]]]
 Flat(arr) 或 arr.flat(Infinity) // [1, 2, 3, 4, 5, 6]
 
-13、数组去重
+13、数组去重 
 function uniq(arr=[]){
   return arr.reduce((t,v) => t.includes(v) ? t : [...t,v], [])
+}
+function uniq(arr=[]){
+  return arr.reduce((t,v)=>(t.includes(v) ? t : [...t,v],t),[])
+}
+function unique(arr){
+  return Array.from(new Set(arr))
 }
 
 14、数组过滤
