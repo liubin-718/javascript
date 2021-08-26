@@ -10,3 +10,58 @@ Node 10以及之前版本：
 Node 11以及之后版本：
  一旦执行一个阶段里对应宏队列当中的一个宏任务（setTimeout, setInterval, setImmediate 三者之一，不包括I/O）
  就立即执行微任务队列，执行完微任务队列当中所有微任务再回到刚才的宏任务执行下一个宏任务。这就跟 浏览器端运行一致了。
+
+ 实例：
+ 1、
+ console.log('script start')
+ async function async1(){
+   console.log('async1 start')
+   await async2()
+   console.log('async1 end')
+ }
+ async function async2(){
+   console.log('async2')
+ }
+ async1()
+ new Promise(resolve => {
+   console.log('promise1 start')
+   resolve()
+   console.log('promise1 end')
+ }).then(() => {
+   console.log('promise2')
+ })
+ console.log('script end')
+ 2、 https://www.jianshu.com/p/ccdaa1ae6a92
+ console.log(1)
+ new Promise( res => {
+   setTimeout(() =>{
+     console.log(2)
+     new Promise(res =>{
+       console.log('aaaa')
+       res()
+     },0).then(()=>{
+       console.log('bbb')
+     })
+   })
+   res()
+   console.log(3)
+ },0).then(() =>  {
+   console.log(4)
+   setTimeout(() => {
+     console.log(5)
+   },0)
+ })
+ setTimeout(() => {
+   new Promise( res => {
+     console.log(6)
+     res()
+   }).then(() => {
+     console.log(7)
+   })
+ },0)
+ console.log(8)
+ setTimeout(() => {
+   console.log(9)
+ },0)
+
+

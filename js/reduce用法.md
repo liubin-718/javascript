@@ -157,6 +157,16 @@ function uniq(arr=[]){
 function unique(arr){
   return Array.from(new Set(arr))
 }
+function unique(arr){
+  return [...new Set(arr)]
+}
+<!-- 利用Map数据结构 -->
+function unique(arr){
+  let map = new Map()
+  return arr.filter(item => {
+    return !map.has(item) && map.set(item,1)
+  })
+}
 
 14、数组过滤
 function difference(arr=[], oarr=[]){
