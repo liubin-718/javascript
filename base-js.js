@@ -26,8 +26,8 @@ function flatten(arr) {
 // console.log(flatten(list1));
 
 
-3.字母异位词分组
-给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。
+/* 3.字母异位词分组
+给定一个字符串数组，将字母异位词组合在一起。字母异位词指字母相同，但排列不同的字符串。 */
 
 示例:
 
@@ -38,18 +38,18 @@ function flatten(arr) {
   ["nat","tan"],
   ["bat"]
 ]
-说明：
+/* 说明：
 
 所有输入均为小写字母。
 不考虑答案输出的顺序。
 
 来源：力扣（LeetCode）
-链接：https://leetcode-cn.com/problems/group-anagrams
+链接：https://leetcode-cn.com/problems/group-anagrams */
 
-var groupAnagrams = function(strs) {
+var groupAnagrams = function(strArr) {
 	let res = {};
-	for(let i = 0; i < strs.length; i++) {
-		const str = strs[i]
+	for(let i = 0; i < strArr.length; i++) {
+		const str = strArr[i]
 		const hash = str.split('').reduce((sum, s)=>{
 			return sum * [3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97,101,103 ][s.charCodeAt(0) - 97]
 		}, 1)
@@ -66,10 +66,12 @@ function flatten(arr){
     },[])
 }
 
+/* 
 4、第10篇: 能不能实现事件的防抖和节流？
-节流   对 scroll 事件做节流处理
-节流的核心思想: 如果在定时器的时间范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器任务。
-这就好比公交车，10 分钟一趟，10 分钟内有多少人在公交站等我不管，10 分钟一到我就要发车走人！
+  节流   对 scroll 事件做节流处理
+  节流的核心思想: 如果在定时器的时间范围内再次触发，则不予理睬，等当前定时器完成，才能启动下一个定时器任务。
+  这就好比公交车，10 分钟一趟，10 分钟内有多少人在公交站等我不管，10 分钟一到我就要发车走人！ 
+*/
 代码如下:
 const throttle = (fn, wait = 1000) => {
   let lastTime = 0
@@ -82,7 +84,7 @@ const throttle = (fn, wait = 1000) => {
   }
 }
 
-
+// @手写这个
 function throttle(fn, interval) {
   let flag = true;
   return function(...args) {
@@ -107,11 +109,26 @@ const throttle = function(fn, interval) {
     fn.apply(this, args)
   }
 }
-防抖：任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。（多次点击按钮）
-节流：指定时间间隔内只会执行一次任务。（scroll）
-防抖
-核心思想: 每次事件触发则删除原来的定时器，建立新的定时器。跟王者荣耀的回城功能类似，
-反复触发回城功能，那么只认最后一次，从最后一次触发开始计时。
+/* 
+  防抖：任务频繁触发的情况下，只有任务触发的间隔超过指定间隔的时候，任务才会执行。（多次点击按钮）
+  节流：指定时间间隔内只会执行一次任务。（scroll）
+  防抖
+  核心思想: 每次事件触发则删除原来的定时器，建立新的定时器。跟王者荣耀的回城功能类似，
+  反复触发回城功能，那么只认最后一次，从最后一次触发开始计时。 
+*/
+// @手写这个 防抖
+function debounce(fn, delay=300){
+  let timer = null  // 闭包引用的外界变量
+  return function(){
+    const args = arguments
+    if (timer) {
+      clearTimeout(timer)
+    }
+    timer = setTimeout(() => {
+      fn.apply(this, args)
+    }, delay)
+  }
+}
 function debounce(fn, delay) {
   let timer = null;
   return function (...args) {
@@ -133,8 +150,8 @@ const debounce = (fn, wait=1000)=>{
     }, wait)
   }
 }
-双剑合璧——加强版节流
-现在我们可以把防抖和节流放到一起，为什么呢？因为防抖有时候触发的太频繁会导致一次响应都没有，我们希望到了固定的时间必须给用户一个响应，事实上很多前端库就是采取了这样的思路。
+/* 双剑合璧——加强版节流
+现在我们可以把防抖和节流放到一起，为什么呢？因为防抖有时候触发的太频繁会导致一次响应都没有，我们希望到了固定的时间必须给用户一个响应，事实上很多前端库就是采取了这样的思路。 */
 function throttle(fn, delay) {
   let last = 0, timer = null;
   return function (...args) {
@@ -153,11 +170,10 @@ function throttle(fn, delay) {
     }
   }
 }
-链接：https://juejin.im/post/5df5bcea6fb9a016091def69
+// 链接：https://juejin.im/post/5df5bcea6fb9a016091def69
 
-最新ECMAScript标准定义了8种数据类型：
-  7种原始类型：Boolean、Null、Undefined、Number、BigInt、String、Symbol
-  和 Object
+// 最新ECMAScript标准定义了8种数据类型：
+  // 7种原始类型：Boolean、Null、Undefined、Number、BigInt、String、Symbol和 Object
 
   （BigInt 是一种数字类型的数据，它可以表示任意精度格式的整数）
   1.typeof 5n==='bigint'  // true
@@ -167,4 +183,66 @@ function throttle(fn, delay) {
   3.typeof Object(1n) === 'object'; // true
     typeof BigInt('1') === 'bigint'; // true
 
-  https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+  https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/BigInt  
+
+// 数组扁平化：
+/* Es6 */
+const flatten = (arr) => {
+  let res = []
+  arr.forEach(item, i, arr => {
+    if (Array.isArray(arr)) {
+      res = res.concat(flatten(item))
+    }else{
+      res.push(arr[i])
+    }
+  });
+  return res
+}
+
+// es6 解构运算符 ...或者while
+// ... 每次只能展开最外层的数组，被 [].concat后，arr就扁平化一次
+function flatten(arr){
+  while(arr.some(item => Array.isArray(item))){
+    arr = [].concat(...arr)
+  }
+  return arr
+}
+
+// reduce方法
+/* 需要注意的是reduce方法，我们传递了两个参数，
+第一个参数就是就是处理扁平化的箭头函数
+第二个参数是一个空数组，也是作为遍历的开始。（res） */
+ var arr1 = [1, 2, [3], [1, 2, 3, [4, [2, 3, 4]]]];
+ function flatten(arr) {
+    return arr.reduce((prev,cur) =>{
+      return prev.concat(Array.isArray(cur)? flatten(cur) : cur);
+    },[]);
+  }
+
+// 手写async await
+function asyncToGenerator(generatorFunc) {
+  // 返回一个新函数
+  return function () {
+    const gen = generatorFunc.apply(this, arguments)
+    return new Promise((resolve, reject) => {
+      function step(key, arg) {
+        let generatorResult
+        try {
+          generatorResult = gen[key](arg)
+        } catch (error) {
+          return reject(error)
+        }
+        const { value, done } = generatorResult
+        if (done) {
+          return resolve(value)
+        } else {
+          return Promise.resolve(value).then(val => step('next', val), err
+            => step('throw', err))
+        }
+      }
+      step("next")
+    })
+  }
+}
+
+

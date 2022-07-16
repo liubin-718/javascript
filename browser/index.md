@@ -1,5 +1,5 @@
 1、后端一次给你10万条数据，前端怎么样优雅展示？
-  -方案一---定时器 https://juejin.cn/post/6986237263164211207?utm_source=gold_browser_extension
+  -方案一---定时器（时间分片） https://juejin.cn/post/6986237263164211207?utm_source=gold_browser_extension
   -方案二---虚拟滚动  https://juejin.cn/post/6844903982742110216
   #定时器
   function loadAll(response) { 

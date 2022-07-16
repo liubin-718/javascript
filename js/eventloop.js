@@ -31,3 +31,80 @@ while(true) {
     break;
   }
 }
+
+// 2、  
+setTimeout(function () {
+  console.log("1");
+}, 0);
+async function async1() {
+  console.log("2");
+  const data = await async2();
+  console.log("3");
+  return data;
+}
+async function async2() {
+  return new Promise((resolve) => {
+    console.log("4");
+    resolve("async2的结果");
+  }).then((data) => {
+    console.log("5");
+    return data;
+  });
+}
+async1().then((data) => {
+  console.log("6");
+  console.log(data);
+});
+new Promise(function (resolve) {
+  console.log("7");
+  //   resolve()
+}).then(function () {
+  console.log("8");
+});
+
+
+
+new Promise((resolve, reject) => {
+  console.log(1)
+  setTimeout(() => {
+    resolve('异步任务获取的数据')
+    new Promise((resolve, reject) => {
+      console.log('1a')
+      setTimeout(() => {
+        resolve('异步任务获取的数据a')
+      }, 500)
+    }).then((data) => {
+      console.log('9a')
+      console.log(data)
+      console.log('3a')
+    })
+  }, 2000)
+}).then((data) => {
+  console.log(9)
+  console.log(data)
+  console.log(3)
+})
+
+// 输出结果：247536 async2 的结果 1
+// 注意！我在最后一个 Promise 埋了个坑 我没有调用 resolve 方法 
+/* 
+async function async2() {
+  return new Promise((resolve) => {
+    console.log("4");
+    resolve("async2的结果");
+  }).then((data) => {
+    console.log("5", data);
+    return data;
+  });
+}
+4
+5
+async2的結果
+Promise{<fulfilled>: 'async2的結果'}
+*/
+
+let res = (function pt() {
+  return (() => this.x).bind({ x: 'inner' })();
+}).call({ x: 'outer' });
+
+console.log(res)  // 问 输出结果

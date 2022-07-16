@@ -8,6 +8,13 @@ Object.keys(util).forEach((fun)=>{
     Vue.prototype[`$${fun}`] = util[fun]
 })
 
+require.context()
+  require.context函数接受三个参数
+    directory {String} -读取文件的路径
+    useSubdirectories {Boolean} -是否遍历文件的子目录
+    regExp {RegExp} -匹配文件的正则
+
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 1、在函数中，this永远指向最后那个调用他的那个对象 （动态的）
   --小心闭包中更改this的指向
 2、箭头函数this为父作用域的this，不是调用时的this （静态的）

@@ -76,7 +76,7 @@ function distinchN(arr){
 // distinchN(['1','a','a',2,3,3,3,4])   
 //{1: 1, 2: 1, 3: 3, 4: 1, a: 2}
 // includes或indexOf去重
-function(arr){
+function unquire(arr){
     let newArr=[]
     for (let i = 0; i < arr.length; i++) {
         if(!newArr.includes(arr[i])){ 
