@@ -248,3 +248,117 @@ var bobbleS = function(arr){
     }
     return arr
 }
+
+/* 
+    扁平数组结构转Tree
+    let arr = [
+        {id: 1, name: '部门1', pid: 0},
+        {id: 2, name: '部门2', pid: 1},
+        {id: 3, name: '部门3', pid: 1},
+        {id: 4, name: '部门4', pid: 3},
+        {id: 5, name: '部门5', pid: 4},
+    ]
+    结果：
+    [{
+        "id": 1,
+        "name": "部门1",
+        "pid": 0,
+        "children": [
+            {
+                "id": 2,
+                "name": "部门2",
+                "pid": 1,
+                "children": []
+            },
+            {
+                "id": 3,
+                "name": "部门3",
+                "pid": 1,
+                "children": [
+                    // 结果 ,,,
+                ]
+            }
+        ]
+    }]
+
+链接：https://juejin.cn/post/6983904373508145189
+
+*/
+// 方法一：递归  时间复杂度O(2^n)
+    // 递归查找，获取children
+const getChildren = (data,result,pid)=>{
+    for(let item of data){
+        if(item.pid === pid){
+            const newItem = {...item, children:[]}
+            result.push(newItem)
+            getChildren(data,newItem.children, item.id)
+        }
+    }
+}
+const arrToTree = (data,pid)=>{
+    const result=[]
+    getChildren(data,result,pid)
+    return result
+}
+arrToTree(arr,0)
+
+// 方法二：把数据转成Map存储，遍历，借助对象的引用，从Map找对应数据存储
+// 有两次循环，该实现的时间复杂度为O(2n)，需要一个Map把数据存储起来，空间复杂度O(n)
+function arrayToTree(arr) {
+  const result = [];
+  const arrMap = {};
+  // 转成map存储
+  for(const item of arr){
+    arrMap[item.id] = {...item, children:[]}
+  }
+  for (const item of arr) {
+    const id = item.id;
+    const pid = item.pid;
+    const treeItem = arrMap[id];
+    if (pid === 0) {
+      result.push(treeItem);
+    } else {
+      if (!arrMap[pid]) {
+        arrMap[pid] = {
+          children: [],
+        };
+      }
+      arrMap[pid].children.push(treeItem);
+    }
+  }
+  return result;
+}
+
+// 方法三：（最优性能）把数据转成Map存储，遍历，借助对象的引用，从Map找对应的数据存储。
+// 不同点在遍历的时候即做Map存储，找对应关系
+// 时间复杂度为O(n)，需要一个Map把数据存储起来，空间复杂度O(n)
+function arrayToTree(arr){
+    const result=[]
+    const arrMap={}
+    for(const item of arr){
+        const id=item.id
+        const pid=item.pid
+        if(!arrMap[id]){
+            arrMap[id]={
+                children:[]
+            }
+        }
+
+        arrMap[id]={
+            ...item,
+            children:arrMap[id]['children']
+        }
+        const treeItem=arrMap[id]
+        if(pid===0){
+            result.push(treeItem)
+        }else{
+            if(!arrMap[pid]){
+                arrMap[pid]={
+                    children:[]
+                }
+            }
+            arrMap[pid].children.push(treeItem)
+        }
+    }
+    return result
+}
