@@ -20,7 +20,7 @@ https://juejin.cn/post/6897911460656070669#heading-7
 
 class EasyPromise{
     constructor (executor){
-        this.status=PINDING
+        this.status=PENDING
         this.value=undefined
         this.reason=undefined
         this.onResolvedCb=[]

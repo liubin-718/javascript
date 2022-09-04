@@ -1,5 +1,8 @@
 {
     "editor.codeActionsOnSave": null,
     "diffEditor.wordWrap": "on",
-    "editor.wordWrap": "on"
+    "editor.wordWrap": "on",
+    "cSpell.words": [
+        "vuex"
+    ]
 }
